@@ -6,38 +6,20 @@ use Marketplace\Domain\Customer\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Order\Entity\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Marketplace\Domain\Product\Entity\Product;
-use Marketplace\Domain\ProductCart\Entity\ProductCart;
-use Marketplace\Infrastructure\Customer\Infrastructure\Repository\CustomerRepository;
 
-#[ORM\Entity(repositoryClass: CustomerRepository::class)]
 class Customer
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 150)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 150)]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    /**
-     * @var Collection<int, Order>
-     */
-    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'customer_id', orphanRemoval: true)]
     private Collection $orders;
 
-    /**
-     * @var Collection<int, Cart>
-     */
-    #[ORM\OneToMany(targetEntity: Cart::class, mappedBy: 'customer_id', cascade:['persist','remove'], orphanRemoval: true)]
     private Collection $cart;
 
     public function __construct()
@@ -124,7 +106,17 @@ class Customer
 
     public function addCart(Cart $cart): static
     {
+        if ($this->cart->isEmpty()) {
+            $this->cart->add($cart);
+        }
         if (!$this->cart->contains($cart)) {
+            $finder = function($c) use ($cart){
+                return $cart->getStatus() === 'pending';
+            };
+            $cartsInPendingStatus = $this->cart->filter($finder);
+            if (!empty($cartsInPendingStatus)){
+                throw new \Exception("Ya tienes un carrito activo");
+            }
             $this->cart->add($cart);
             $cart->setCustomerId($this);
         }
@@ -147,8 +139,9 @@ class Customer
     public function addProductToCart(Product $product, int $quantity): static
     {
         if ($this->cart->isEmpty()) {
-            $this->cart[0] = new Cart($this);
-            $this->cart[0]->setStatus('pending');
+            $cart = new Cart($this);
+            $cart->setStatus('pending');
+            $this->addCart($cart);
         }
         if ($this->getNumberOfProductsInCart() === 3) {
             throw new CantHaveMoreThanThreeProductsInCart();
@@ -156,6 +149,17 @@ class Customer
         $this->getCart()->addProductToCart($product, $quantity);
         return $this;
     }
+
+    public function removeProductFromCart(Product $product): static
+    {
+        if ($this->cart->isEmpty()) {
+            return $this;
+        }
+
+        $this->getCart()->removeProductFromCart($product);
+        return $this;
+    }
+
     public function getNumberOfProductsInCart(): int
     {
         if ($this->cart->isEmpty()) {
@@ -168,5 +172,11 @@ class Customer
     {
         $this->getCart()->setStatus('finished');
 
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+        return $this;
     }
 }

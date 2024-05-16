@@ -5,31 +5,20 @@ namespace Marketplace\Domain\Customer\Entity;
 use Marketplace\Domain\ProductCart\Entity\ProductCart;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Marketplace\Domain\Product\Entity\Product;
-use Marketplace\Infrastructure\Customer\Infrastructure\Repository\CartRepository;
 
-#[ORM\Entity(repositoryClass: CartRepository::class)]
 class Cart
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
     private ?int $id = null;
 
 
-    #[ORM\ManyToOne(inversedBy: 'cart')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Customer $customer_id = null;
 
-    /**
-     * @var Collection<int, ProductCart>
-     */
-    #[ORM\OneToMany(targetEntity: ProductCart::class, mappedBy: 'cart', cascade:['persist','remove'])]
     private Collection $productCarts;
 
-    #[ORM\Column(length: 25)]
     private ?string $status = null;
+    private ArrayCollection $order_id;
+    private ArrayCollection $product;
 
     public function __construct(Customer $customer)
     {
@@ -74,6 +63,21 @@ class Cart
             $productCart->setQuantity($quantity);
             $productCart->setPrice($product->getPrice());
             $this->addProductCart($productCart);
+        }
+
+        return $this;
+    }
+
+    public function removeProductFromCart(Product $product): static
+    {
+        if ($this->product->contains($product)) {
+            $this->product->removeElement($product);
+            $finder = function($p) use ($product){
+                return $product->getId() == $p->getProduct()->getId();
+            };
+            $element = $this->productCarts->filter($finder);
+            $this->productCarts->removeElement($product);
+            $this->removeProductCart($element->getValues()[0]);
         }
 
         return $this;

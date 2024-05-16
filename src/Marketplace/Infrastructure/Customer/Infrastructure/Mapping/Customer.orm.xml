@@ -1,0 +1,29 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="Marketplace\Domain\Customer\Entity\Customer" table="customer" schema="marketplace" repository-class="Marketplace\Infrastructure\Customer\Infrastructure\Repository\CustomerRepository">
+        <id name="id" type="integer" column="id" >
+            <generator strategy="AUTO" />
+        </id>
+        <field name="name" type="string" length="150" />
+        <field name="email" type="string" length="150" />
+        <field name="password" type="string" length="255" />
+        <one-to-many
+                field="orders"
+                target-entity="Marketplace\Domain\Order\Entity\Order"
+                mapped-by="customer_id">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+        <one-to-many
+                field="cart"
+                target-entity="Marketplace\Domain\Customer\Entity\Cart"
+                mapped-by="customer_id">
+
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+    </entity>
+</doctrine-mapping>

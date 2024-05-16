@@ -1,0 +1,22 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="Marketplace\Domain\Customer\Entity\Cart" table="cart" schema="marketplace" repository-class="Marketplace\Infrastructure\Customer\Infrastructure\Repository\CartRepository">
+        <id name="id" type="integer" column="id" >
+            <generator strategy="AUTO" />
+        </id>
+        <field name="status" type="string" length="25" />
+        <one-to-many
+                field="productCarts"
+                target-entity="Marketplace\Domain\ProductCart\Entity\ProductCart"
+                mapped-by="cart">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+        <many-to-one
+                field="customer_id"
+                inversed-by="cart"
+                target-entity="Marketplace\Domain\Customer\Entity\Customer">
+        </many-to-one>
+    </entity>
+</doctrine-mapping>
