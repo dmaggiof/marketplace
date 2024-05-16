@@ -13,11 +13,14 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    App\:
-        resource: '../src/'
+    ProductFixtures\:
+        resource: '../src/Marketplace/Infrastructure/Product/Fixtures'
+    CustomerFixtures\:
+        resource: '../src/Marketplace/Infrastructure/Customer/Fixtures'
+    Marketplace\:
+        resource: '../src/Marketplace/'
         exclude:
             - '../src/Marketplace/DependencyInjection/'
-            - '../src/Marketplace/Entity/'
             - '../src/Marketplace/Kernel.php'
             - '../src/Marketplace/Infrastructure/Product/Fixtures'
             - '../src/Marketplace/Infrastructure/Customer/Fixtures'
