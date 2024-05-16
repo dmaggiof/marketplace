@@ -1,16 +1,16 @@
 <?php
 
-namespace Marketplace\Infrastructure\Customer\Infrastructure\Repository\InmemoryRepository;
+namespace Marketplace\Infrastructure\Product\Repository;
 
-use Marketplace\Domain\Customer\Repository\CartRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Marketplace\Domain\Customer\Entity\Cart;
+use Marketplace\Domain\Product\Entity\Product;
 
 /**
  * @extends ServiceEntityRepository<Cart>
  */
-class CartRepository  implements CartRepositoryInterface
+class InmemoryProductRepository
 {
     private array $fakeData = [];
     public function __construct()
@@ -18,7 +18,7 @@ class CartRepository  implements CartRepositoryInterface
         $this->fakeData = [];
     }
 
-    public function findById(int $id): ?Cart
+    public function findById(int $id): ?Product
     {
         foreach ($this->fakeData as $model) {
             if ($model->getId() == $id) {
@@ -28,8 +28,9 @@ class CartRepository  implements CartRepositoryInterface
         return null;
     }
 
-    public function save(Cart $cart)
+    public function save(Product $product)
     {
-        $this->fakeData[] = $cart;
+        $product->setId(count($this->fakeData)+1);
+        $this->fakeData[] = $product;
     }
 }

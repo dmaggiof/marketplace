@@ -2,18 +2,23 @@
 
 namespace Marketplace\Infrastructure\Customer\Infrastructure\Repository;
 
+use Marketplace\Domain\Customer\Repository\CartRepositoryInterface;
 use Marketplace\Domain\Customer\Entity\Cart;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Marketplace\Domain\Customer\Entity\Customer;
 
 /**
  * @extends ServiceEntityRepository<Cart>
  */
-class CartRepository extends ServiceEntityRepository
+class CartRepository extends ServiceEntityRepository implements CartRepositoryInterface
 {
+    private \Doctrine\ORM\EntityManagerInterface $manager;
+
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Cart::class);
+        parent::__construct($registry, Customer::class);
+        $this->manager =$this->getEntityManager();
     }
 
     //    /**
@@ -40,4 +45,8 @@ class CartRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    public function save(Cart $cart){
+        $this->manager->persist($cart);
+        $this->manager->flush();
+    }
 }
