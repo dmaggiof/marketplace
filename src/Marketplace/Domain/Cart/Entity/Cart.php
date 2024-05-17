@@ -5,6 +5,7 @@ namespace Marketplace\Domain\Cart\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
+use Marketplace\Domain\Cart\Exceptions\CantEditAddressOnFinishedCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Product\Entity\Product;
 use Marketplace\Domain\ProductCart\Entity\ProductCart;
@@ -135,6 +136,9 @@ class Cart
 
     public function setAddress(?string $address): void
     {
+        if ($this->status === self::FINISHED_CART) {
+            throw new CantEditAddressOnFinishedCart;
+        }
         $this->address = $address;
     }
 
