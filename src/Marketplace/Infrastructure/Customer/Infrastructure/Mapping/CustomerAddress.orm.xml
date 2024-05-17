@@ -1,0 +1,18 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <entity name="Marketplace\Domain\Customer\Entity\CustomerAddress" table="customer_address" schema="marketplace" repository-class="Marketplace\Infrastructure\Customer\Infrastructure\Repository\CustomerAddressRepository">
+        <id name="id" type="integer" column="id" >
+            <generator strategy="AUTO" />
+        </id>
+        <field name="address" type="string" length="255" />
+        <field name="default_address" type="boolean" >
+            <options>
+                <option name="default">"0"</option>
+            </options>
+        </field>
+        <many-to-one
+                field="customer"
+                inversed-by="customerAddresses"
+                target-entity="Marketplace\Domain\Customer\Entity\Customer">
+        </many-to-one>
+    </entity>
+</doctrine-mapping>
