@@ -1,6 +1,6 @@
 <?php
 
-namespace Marketplace\Domain\Customer\Exceptions;
+namespace Marketplace\Domain\Cart\Exceptions;
 
 use Exception;
 

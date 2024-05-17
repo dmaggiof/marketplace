@@ -4,7 +4,6 @@ namespace Marketplace\Infrastructure\Customer\Infrastructure\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Marketplace\Domain\Customer\Entity\Cart;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
 use Marketplace\Domain\Customer\Repository\CustomerAddressRepositoryInterface;
 

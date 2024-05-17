@@ -4,14 +4,14 @@
 namespace Tests\Marketplace\Domain;
 
 use Exception;
+use Marketplace\Domain\Cart\Entity\Cart;
+use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
+use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;
-use Marketplace\Infrastructure\Customer\Infrastructure\Repository\InmemoryRepository\CustomerRepository;
-use Marketplace\Domain\Customer\Exceptions\CantHaveMoreThanThreeProductsInCart;
-use Marketplace\Domain\Customer\Entity\Cart;
-use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Product\Entity\Product;
 use Marketplace\Domain\Supplier\Entity\Supplier;
+use Marketplace\Infrastructure\Customer\Infrastructure\Repository\InmemoryRepository\CustomerRepository;
 use Marketplace\Infrastructure\Product\Repository\InmemoryProductRepository;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

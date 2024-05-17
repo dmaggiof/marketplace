@@ -3,7 +3,7 @@
 namespace Marketplace\Infrastructure\Customer\Infrastructure\Repository\InmemoryRepository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Marketplace\Domain\Customer\Entity\Cart;
+use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
 use Marketplace\Domain\Customer\Repository\CustomerAddressRepositoryInterface;
 

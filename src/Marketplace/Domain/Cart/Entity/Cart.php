@@ -1,11 +1,12 @@
 <?php
 
-namespace Marketplace\Domain\Customer\Entity;
+namespace Marketplace\Domain\Cart\Entity;
 
-use Marketplace\Domain\ProductCart\Entity\ProductCart;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Product\Entity\Product;
+use Marketplace\Domain\ProductCart\Entity\ProductCart;
 
 class Cart
 {
@@ -15,16 +16,13 @@ class Cart
 
 
     private ?Customer $customer_id = null;
-
     private Collection $productCarts;
-
     private ?string $status = null;
-
     private ?string $address = null;
     private ArrayCollection $order_id;
     private ArrayCollection $product;
 
-    public function __construct(Customer $customer)
+    public function __construct(?Customer $customer)
     {
         $this->order_id = new ArrayCollection();
         $this->product = new ArrayCollection();

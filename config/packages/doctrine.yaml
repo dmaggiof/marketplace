@@ -22,8 +22,8 @@ doctrine:
             Cart:
                 is_bundle: false
                 type: xml
-                dir: '%kernel.project_dir%/src/Marketplace/Infrastructure/Customer/Infrastructure/Mapping'
-                prefix: 'Marketplace\Domain\Customer\Entity'
+                dir: '%kernel.project_dir%/src/Marketplace/Infrastructure/Cart/Mapping'
+                prefix: 'Marketplace\Domain\Cart\Entity'
                 alias: Cart
             Product:
                 type: attribute

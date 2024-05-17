@@ -1,11 +1,11 @@
 <?php
 
-namespace Marketplace\Infrastructure\Customer\Infrastructure\Repository;
+namespace Marketplace\Infrastructure\Cart\Repository;
 
-use Marketplace\Domain\Customer\Repository\CartRepositoryInterface;
-use Marketplace\Domain\Customer\Entity\Cart;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Marketplace\Domain\Cart\Entity\Cart;
+use Marketplace\Domain\Cart\Repository\CartRepositoryInterface;
 
 /**
  * @extends ServiceEntityRepository<Cart>

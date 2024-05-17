@@ -3,8 +3,7 @@
 namespace Marketplace\Infrastructure\Product\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use Marketplace\Domain\Customer\Entity\Cart;
+use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Product\Entity\Product;
 
 /**

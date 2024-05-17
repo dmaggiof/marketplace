@@ -3,9 +3,9 @@
 
 namespace Tests\Marketplace\Domain;
 
+use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
-use Marketplace\Domain\Customer\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;
 use Marketplace\Domain\Product\Entity\Product;
 use Marketplace\Domain\Supplier\Entity\Supplier;

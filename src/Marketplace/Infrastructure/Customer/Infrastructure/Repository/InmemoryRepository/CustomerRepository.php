@@ -3,11 +3,9 @@
 namespace Marketplace\Infrastructure\Customer\Infrastructure\Repository\InmemoryRepository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use Marketplace\Domain\Customer\Entity\Cart;
+use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;
-use function PHPUnit\Framework\isNull;
 
 /**
  * @extends ServiceEntityRepository<Cart>

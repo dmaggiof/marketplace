@@ -2,11 +2,12 @@
 
 namespace Marketplace\Domain\Customer\Entity;
 
-use Marketplace\Domain\Customer\Exceptions\CantHaveMoreThanThreeProductsInCart;
-use Marketplace\Domain\Customer\Exceptions\CustomerHasNoAddressConfigured;
-use Marketplace\Domain\Order\Entity\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Marketplace\Domain\Cart\Entity\Cart;
+use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
+use Marketplace\Domain\Customer\Exceptions\CustomerHasNoAddressConfigured;
+use Marketplace\Domain\Order\Entity\Order;
 use Marketplace\Domain\Product\Entity\Product;
 
 class Customer

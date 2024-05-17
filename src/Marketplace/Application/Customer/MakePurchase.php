@@ -1,9 +1,8 @@
 <?php
 namespace Marketplace\Application\Customer;
-use Doctrine\ORM\EntityManagerInterface;
+use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Customer\DTO\CustomerPurchasing;
 use Marketplace\Domain\Customer\DTO\UserPurchasing;
-use Marketplace\Domain\Customer\Entity\Cart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Exceptions\CustomerHasNoAddressConfigured;
 use Marketplace\Domain\Order\Entity\Order;

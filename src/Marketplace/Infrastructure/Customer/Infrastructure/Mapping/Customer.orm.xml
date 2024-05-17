@@ -26,7 +26,7 @@
         </one-to-many>
         <one-to-many
                 field="cart"
-                target-entity="Marketplace\Domain\Customer\Entity\Cart"
+                target-entity="Marketplace\Domain\Cart\Entity\Cart"
                 mapped-by="customer_id">
 
             <cascade>

@@ -2,10 +2,9 @@
 
 namespace Marketplace\Domain\Product\Entity;
 
-use Marketplace\Domain\Customer\Entity\Cart;
+use Doctrine\ORM\Mapping as ORM;
 use Marketplace\Domain\Supplier\Entity\Supplier;
 use Marketplace\Infrastructure\Product\Repository\ProductRepository;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
