@@ -4,6 +4,7 @@
 namespace Tests\Marketplace\Domain;
 
 use Marketplace\Domain\Customer\Entity\Customer;
+use Marketplace\Domain\Customer\Entity\CustomerAddress;
 use Marketplace\Domain\Customer\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;
 use Marketplace\Domain\Product\Entity\Product;
@@ -106,7 +107,13 @@ class RemoveProductsFromCartUnitTest extends KernelTestCase
         $customer->setName('Daniel')
             ->setEmail('dmaggio@dmaggio.com')
             ->setPassword('abc123');
+        ;
 
+        $customerAddress = new CustomerAddress();
+        $customerAddress->setAddress('direccion 123 1ºb');
+        $customerAddress->setCustomer($customer);
+
+        $customer->setAddress($customerAddress);
         $customerRepository->save($customer);
 
 

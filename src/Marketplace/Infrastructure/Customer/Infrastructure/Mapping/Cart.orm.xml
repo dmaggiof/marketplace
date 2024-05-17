@@ -4,6 +4,7 @@
             <generator strategy="AUTO" />
         </id>
         <field name="status" type="string" length="25" />
+        <field name="address" type="string" length="255" />
         <one-to-many
                 field="productCarts"
                 target-entity="Marketplace\Domain\ProductCart\Entity\ProductCart"

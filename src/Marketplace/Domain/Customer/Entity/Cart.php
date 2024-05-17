@@ -9,6 +9,8 @@ use Marketplace\Domain\Product\Entity\Product;
 
 class Cart
 {
+    const FINISHED_CART = 'finished';
+    const PENDING_CART = 'pending';
     private ?int $id = null;
 
 
@@ -17,6 +19,8 @@ class Cart
     private Collection $productCarts;
 
     private ?string $status = null;
+
+    private ?string $address = null;
     private ArrayCollection $order_id;
     private ArrayCollection $product;
 
@@ -115,6 +119,24 @@ class Cart
         $this->status = $status;
 
         return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): void
+    {
+        $this->address = $address;
+    }
+
+    public function markAsCompleted()
+    {
+        if (is_null($this->address)) {
+            $this->setAddress($this->customer_id->getCustomerDefaultAddress()->getAddress());
+        }
+        $this->setStatus(self::FINISHED_CART);
     }
 
 

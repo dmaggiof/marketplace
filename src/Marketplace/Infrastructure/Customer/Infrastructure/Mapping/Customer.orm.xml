@@ -16,6 +16,15 @@
             </cascade>
         </one-to-many>
         <one-to-many
+                field="customerAddresses"
+                target-entity="Marketplace\Domain\Customer\Entity\CustomerAddress"
+                mapped-by="customer">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+        <one-to-many
                 field="cart"
                 target-entity="Marketplace\Domain\Customer\Entity\Cart"
                 mapped-by="customer_id">

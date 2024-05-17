@@ -3,6 +3,7 @@
 namespace Marketplace\Domain\Customer\Entity;
 
 use Marketplace\Domain\Customer\Exceptions\CantHaveMoreThanThreeProductsInCart;
+use Marketplace\Domain\Customer\Exceptions\CustomerHasNoAddressConfigured;
 use Marketplace\Domain\Order\Entity\Order;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -22,10 +23,16 @@ class Customer
 
     private Collection $cart;
 
+    /**
+     * @var Collection<int, CustomerAddress>
+     */
+    private Collection $customerAddresses;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
         $this->cart = new ArrayCollection();
+        $this->customerAddresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,13 +177,71 @@ class Customer
 
     public function makePurchase()
     {
-        $this->getCart()->setStatus('finished');
+        if (!$this->getCustomerDefaultAddress()) {
+            throw new CustomerHasNoAddressConfigured;
+        }
+        $this->getCart()->markAsCompleted();
 
     }
 
     public function setId(int $id): static
     {
         $this->id = $id;
+        return $this;
+    }
+
+    public function getCustomerAddresses(): Collection
+    {
+        return $this->customerAddresses;
+    }
+
+    public function getCustomerDefaultAddress(): ?CustomerAddress
+    {
+        $finder = function($address){
+            return $address->isDefaultAddress() === true;
+        };
+        $addresses = $this->customerAddresses->filter($finder);
+        if (empty($addresses)) {
+            return null;
+        } else {
+            return $addresses[0];
+        }
+    }
+
+    public function setAddress(CustomerAddress $customerAddress): static
+    {
+        if ($this->customerAddresses->contains($customerAddress)) {
+            $this->customerAddresses->remove($customerAddress);
+        }
+        $this->customerAddresses->forAll(function($key, $address) {
+            if ($address->isDefaultAddress() === true) {
+                $address->setDefaultAddress(false);
+                return true;
+            }
+            return true;
+        });
+        $customerAddress->setDefaultAddress(true);
+        $customerAddress->setCustomer($this);
+        $this->customerAddresses->add($customerAddress);
+
+
+        return $this;
+    }
+
+    public function addCustomerAddress(CustomerAddress $customerAddress): static
+    {
+        if (!$this->customerAddresses->contains($customerAddress)) {
+            $this->customerAddresses->add($customerAddress);
+            $customerAddress->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomerAddress(CustomerAddress $customerAddress): static
+    {
+        $this->customerAddresses->removeElement($customerAddress);
+
         return $this;
     }
 }
