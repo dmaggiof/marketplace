@@ -4,6 +4,7 @@
 namespace Tests\Marketplace\Infrastructure;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Marketplace\Application\Customer\MakePurchase;
 use Marketplace\Domain\Customer\DTO\CustomerPurchasing;
 use Marketplace\Domain\Customer\Entity\Customer;
@@ -22,6 +23,11 @@ class MakePurchaseTest extends KernelTestCase
         $this->entityManager = $kernel->getContainer()
             ->get('doctrine')
             ->getManager();
+
+        $rsm = new ResultSetMapping();
+        $this->entityManager->createNativeQuery('delete from product_cart;',$rsm)->execute();
+        $this->entityManager->createNativeQuery('delete from cart;',$rsm)->execute();
+
     }
 
     public function testMakePurchaseOfThreeElements()
@@ -62,8 +68,12 @@ class MakePurchaseTest extends KernelTestCase
 
     protected function tearDown(): void
     {
-        parent::tearDown();
 
+        $rsm = new ResultSetMapping();
+        $this->entityManager->createNativeQuery('delete from product_cart;',$rsm)->execute();
+        $this->entityManager->createNativeQuery('delete from cart;',$rsm)->execute();
+
+        parent::tearDown();
         // doing this is recommended to avoid memory leaks
         $this->entityManager->close();
         $this->entityManager = null;
