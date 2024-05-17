@@ -25,7 +25,6 @@ class Cart
 
     public function __construct(?Customer $customer = null)
     {
-        $this->order_id = new ArrayCollection();
         $this->product = new ArrayCollection();
         $this->productCarts = new ArrayCollection();
         $this->customer_id = $customer;
