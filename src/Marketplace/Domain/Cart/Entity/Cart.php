@@ -22,7 +22,7 @@ class Cart
     private ArrayCollection $order_id;
     private ArrayCollection $product;
 
-    public function __construct(?Customer $customer)
+    public function __construct(?Customer $customer = null)
     {
         $this->order_id = new ArrayCollection();
         $this->product = new ArrayCollection();
@@ -33,6 +33,12 @@ class Cart
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+        return $this;
     }
 
     public function getCustomerId(): ?Customer

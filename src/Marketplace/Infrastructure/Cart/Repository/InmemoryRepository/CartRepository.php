@@ -29,6 +29,9 @@ class CartRepository  implements CartRepositoryInterface
 
     public function save(Cart $cart)
     {
+        if (is_null($cart->getId())){
+            $cart->setId(count($this->fakeData)+1);
+        }
         $this->fakeData[] = $cart;
     }
 }
