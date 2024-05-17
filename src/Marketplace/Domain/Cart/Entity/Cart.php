@@ -4,6 +4,7 @@ namespace Marketplace\Domain\Cart\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Product\Entity\Product;
 use Marketplace\Domain\ProductCart\Entity\ProductCart;
@@ -19,7 +20,6 @@ class Cart
     private Collection $productCarts;
     private ?string $status = null;
     private ?string $address = null;
-    private ArrayCollection $order_id;
     private ArrayCollection $product;
 
     public function __construct(?Customer $customer = null)
@@ -63,6 +63,9 @@ class Cart
 
     public function addProductToCart(Product $product, int $quantity): static
     {
+        if ($this->status === self::FINISHED_CART) {
+            throw new CantAddProductsToFinishedCart();
+        }
         if (!$this->product->contains($product)) {
             $this->product->add($product);
             $productCart = new ProductCart();

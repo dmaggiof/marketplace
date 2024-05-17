@@ -6,6 +6,7 @@ use Exception;
 use Marketplace\Application\Cart\AddProductToCart;
 use Marketplace\Domain\Cart\DTO\AddProductToCartDTO;
 use Marketplace\Domain\Cart\Entity\Cart;
+use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
 use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
@@ -62,6 +63,29 @@ class AddProductToCartTest extends TestCase
         $service->execute($productDTO);
     }
 
+    /**
+     * @throws ProductNotExists
+     */
+    public function testItMustFailAddingProductsToFinishedCart()
+    {
+        /** @var Customer $customer */
+        $customerRepository = new CustomerRepository();
+        $productRepository = new InmemoryProductRepository();
+        $cartRepository = new CartRepository();
+        $this->prepareDatabase($customerRepository, $productRepository);
+        $this->prepareFinishedCart($cartRepository);
+
+        $product1 = 1;
+        $customer = 1;
+
+        $service = new AddProductToCart($cartRepository, $productRepository, $customerRepository);
+
+        $productDTO = new AddProductToCartDTO($product1, 1, $customer, 1);
+
+        $this->expectException(CantAddProductsToFinishedCart::class);
+        $service->execute($productDTO);
+    }
+
     private function prepareDatabase(CustomerRepositoryInterface $customerRepository, InmemoryProductRepository $productRepository): void
     {
         $customer = new Customer();
@@ -110,5 +134,12 @@ class AddProductToCartTest extends TestCase
             ->setStockQuantity(4)
             ->setSupplierId($supplier);
         $productRepository->save($product4);
+    }
+
+    private function prepareFinishedCart(CartRepository $cartRepository)
+    {
+        $cart = new Cart();
+        $cart->setStatus(CART::FINISHED_CART);
+        $cartRepository->save($cart);
     }
 }
