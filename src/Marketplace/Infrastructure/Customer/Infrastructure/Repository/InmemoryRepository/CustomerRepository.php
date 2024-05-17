@@ -27,6 +27,15 @@ class CustomerRepository implements CustomerRepositoryInterface
         }
         return null;
     }
+    public function findOneById(int $id): ?Customer
+    {
+        foreach ($this->fakeData as $model) {
+            if ($model->getId() == $id) {
+                return $model;
+            }
+        }
+        return null;
+    }
     public function findOneByName(string $name): ?Customer
     {
         foreach ($this->fakeData as $model) {
