@@ -5,11 +5,12 @@ namespace Marketplace\Infrastructure\Product\Repository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Product\Entity\Product;
+use Marketplace\Domain\Product\Repository\ProductRepositoryInterface;
 
 /**
  * @extends ServiceEntityRepository<Cart>
  */
-class InmemoryProductRepository
+class InmemoryProductRepository implements ProductRepositoryInterface
 {
     private array $fakeData = [];
     public function __construct()
