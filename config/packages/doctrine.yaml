@@ -1,0 +1,78 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:DATABASE_URL)%'
+        mapping_types:
+            enum: string
+        profiling_collect_backtrace: '%kernel.debug%'
+        use_savepoints: true
+    orm:
+        auto_generate_proxy_classes: true
+        enable_lazy_ghost_objects: true
+        report_fields_where_declared: true
+        validate_xml_mapping: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            Customer:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Marketplace/Infrastructure/Customer/Infrastructure/Mapping'
+                prefix: 'Marketplace\Domain\Customer\Entity'
+                alias: Customer
+            Cart:
+                is_bundle: false
+                type: xml
+                dir: '%kernel.project_dir%/src/Marketplace/Infrastructure/Customer/Infrastructure/Mapping'
+                prefix: 'Marketplace\Domain\Customer\Entity'
+                alias: Cart
+            Product:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Marketplace/Domain/Product/Entity'
+                prefix: 'Marketplace\Domain\Product'
+                alias: Product
+            ProductCart:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Marketplace/Domain/ProductCart/Entity'
+                prefix: 'Marketplace\Domain\ProductCart'
+                alias: ProductCart
+            Order:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Marketplace/Domain/Order/Entity'
+                prefix: 'Marketplace\Domain\Order'
+                alias: Order
+            Supplier:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Marketplace/Domain/Supplier/Entity'
+                prefix: 'Marketplace\Domain\Supplier'
+                alias: Supplier
+        controller_resolver:
+            auto_mapping: true
+
+when@test:
+    doctrine:
+        dbal:
+            # "TEST_TOKEN" is typically set by ParaTest
+
+when@prod:
+    doctrine:
+        orm:
+            auto_generate_proxy_classes: false
+            proxy_dir: '%kernel.build_dir%/doctrine/orm/Proxies'
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system
