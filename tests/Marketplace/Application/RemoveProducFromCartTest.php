@@ -6,10 +6,12 @@ use Marketplace\Application\Cart\AddProductToCart;
 use Marketplace\Application\Cart\RemoveProductFromCart;
 use Marketplace\Domain\Cart\DTO\AddProductToCartDTO;
 use Marketplace\Domain\Cart\DTO\RemoveProductFromCartDTO;
+use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;
 use Marketplace\Domain\Product\Entity\Product;
+use Marketplace\Domain\Product\Exceptions\ProductNotExists;
 use Marketplace\Domain\Supplier\Entity\Supplier;
 use Marketplace\Infrastructure\Cart\Repository\InmemoryRepository\CartRepository;
 use Marketplace\Infrastructure\Customer\Infrastructure\Repository\InmemoryRepository\CustomerRepository;
@@ -18,7 +20,11 @@ use PHPUnit\Framework\TestCase;
 
 class RemoveProducFromCartTest extends TestCase
 {
-    public function testAddThreeProductsToCartForExistingUser()
+    /**
+     * @throws ProductNotExists
+     * @throws CantAddProductsToFinishedCart
+     */
+    public function testRemoveProductFromCartForExistingUser()
     {
         /** @var Customer $customer */
         $customerRepository = new CustomerRepository();
@@ -35,14 +41,14 @@ class RemoveProducFromCartTest extends TestCase
         $service->execute($productDTO);
 
         $cart = $cartRepository->findById(1);
-        $this->assertEquals(1, count($cart->getProductCarts()));
+        $this->assertCount(1, $cart->getProductCarts());
 
         $serviceRemover = new RemoveProductFromCart($cartRepository, $productRepository, $customerRepository);
         $productDTO = new RemoveProductFromCartDTO($product1, $customer, 1);
         $serviceRemover->execute($productDTO);
 
         $cart = $cartRepository->findById(1);
-        $this->assertEmpty( $cart->getProductCarts());
+        $this->assertTrue($cart->getProductCarts()->isEmpty());
     }
 
     private function prepareDatabase(CustomerRepositoryInterface $customerRepository, InmemoryProductRepository $productRepository): void
