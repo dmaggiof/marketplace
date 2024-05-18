@@ -32,6 +32,16 @@ class CartRepository  implements CartRepositoryInterface
         if (is_null($cart->getId())){
             $cart->setId(count($this->fakeData)+1);
         }
-        $this->fakeData[] = $cart;
+        $this->fakeData[$cart->getId()] = $cart;
+    }
+
+    public function findOneById(string $id): ?Cart
+    {
+        foreach ($this->fakeData as $model) {
+            if ($model->getId() == $id) {
+                return $model;
+            }
+        }
+        return null;
     }
 }

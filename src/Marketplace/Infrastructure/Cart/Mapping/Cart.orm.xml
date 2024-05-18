@@ -8,8 +8,11 @@
         <one-to-many
                 field="productCarts"
                 target-entity="Marketplace\Domain\ProductCart\Entity\ProductCart"
-                mapped-by="cart">
+                mapped-by="cart"
+        fetch="EAGER"
+        orphan-removal="true">
             <cascade>
+                <cascade-all />
                 <cascade-persist/>
                 <cascade-remove/>
             </cascade>

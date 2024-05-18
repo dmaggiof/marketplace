@@ -7,4 +7,5 @@ use Marketplace\Domain\Cart\Entity\Cart;
 interface CartRepositoryInterface
 {
     public function save(Cart $cart);
+    public function findOneById(string $id): ?Cart;
 }

@@ -24,4 +24,14 @@ class CartRepository extends ServiceEntityRepository implements CartRepositoryIn
         $this->manager->persist($cart);
         $this->manager->flush();
     }
+    public function findOneById(string $id): ?Cart
+    {
+        $query = $this->manager->createQuery(
+            'SELECT p
+    FROM Marketplace\Domain\Cart\Entity\Cart p
+    WHERE p.id = :id'
+        )->setParameter('id', $id);
+        $cart = $query->getOneOrNullResult();
+        return $cart;
+    }
 }

@@ -1,0 +1,16 @@
+{% if products is empty %}
+    No tienes productos en el carrito. <a href="{{ path('list_products') }}">Ir al listado de productos </a>
+{% else %}
+    {% for product in products %}
+        <p>
+            {{ product.id }}
+            {{ product.name }}
+            {{ product.description }}
+            {{ product.quantity }}
+            {{ product.price }}
+            <a href="{{ path('remove_product_from_cart', {id: product.id }) }}">Eliminar</a>
+        </p>
+
+    {% endfor %}
+    Total: {{ cartTotal }}
+{% endif %}

@@ -28,9 +28,24 @@ class InmemoryProductRepository implements ProductRepositoryInterface
         return null;
     }
 
+    public function findOneById(string $id): ?Product
+    {
+        foreach ($this->fakeData as $model) {
+            if ($model->getId() == $id) {
+                return $model;
+            }
+        }
+        return null;
+    }
+
     public function save(Product $product)
     {
         $product->setId(count($this->fakeData)+1);
-        $this->fakeData[] = $product;
+        $this->fakeData[$product->getId()] = $product;
+    }
+
+    public function findAllWithStock(array $array)
+    {
+        // TODO: Implement findAllWithStock() method.
     }
 }

@@ -26,3 +26,7 @@ services:
             - '../src/Marketplace/Infrastructure/Customer/Fixtures'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    Marketplace\Domain\Product\Repository\ProductRepositoryInterface: '@Marketplace\Infrastructure\Product\Repository\ProductRepository'
+    Marketplace\Domain\Cart\Repository\CartRepositoryInterface: '@Marketplace\Infrastructure\Cart\Repository\CartRepository'
+    Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface: '@Marketplace\Infrastructure\Customer\Infrastructure\Repository\CustomerRepository'

@@ -27,7 +27,7 @@ class CustomerRepository implements CustomerRepositoryInterface
         }
         return null;
     }
-    public function findOneById(int $id): ?Customer
+    public function findOneById(string $id): ?Customer
     {
         foreach ($this->fakeData as $model) {
             if ($model->getId() == $id) {
@@ -51,19 +51,7 @@ class CustomerRepository implements CustomerRepositoryInterface
         if (is_null($customer->getId())){
             $customer->setId(count($this->fakeData)+1);
         }
-        $this->fakeData[] = $customer;
+        $this->fakeData[$customer->getId()] = $customer;
     }
 
-    private function getNextId(object $object): int
-    {
-        $nextId = 0;
-
-        foreach ($this->fakeData as $currentObject) {
-            $nextId = \max($nextId, $currentObject->getId());
-        }
-
-        ++$nextId;
-
-        return $nextId;
-    }
 }

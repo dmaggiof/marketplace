@@ -16,16 +16,13 @@ class Cart
     const PENDING_CART = 'pending';
     private ?int $id = null;
 
-
     private ?Customer $customer_id = null;
     private Collection $productCarts;
     private ?string $status = null;
     private ?string $address = null;
-    private ArrayCollection $product;
 
     public function __construct(?Customer $customer = null)
     {
-        $this->product = new ArrayCollection();
         $this->productCarts = new ArrayCollection();
         $this->customer_id = $customer;
     }
@@ -66,13 +63,17 @@ class Cart
         if ($this->status === self::FINISHED_CART) {
             throw new CantAddProductsToFinishedCart();
         }
-        if (!$this->product->contains($product)) {
-            $this->product->add($product);
+        if (!$this->productCarts->contains($product)) {
             $productCart = new ProductCart();
             $productCart->setCart($this);
             $productCart->setProduct($product);
             $productCart->setQuantity($quantity);
-            $productCart->setPrice($product->getPrice());
+            $productCart->setPrice($product->getPrice()*$quantity);
+            if (!$this->status) {
+                $this->status=self::PENDING_CART;
+            }
+            $this->productCarts->add($productCart);
+
             $this->addProductCart($productCart);
         }
 
@@ -81,16 +82,12 @@ class Cart
 
     public function removeProductFromCart(Product $product): static
     {
-        if ($this->product->contains($product)) {
-            $this->product->removeElement($product);
-            $finder = function($p) use ($product){
-                return $product->getId() == $p->getProduct()->getId();
-            };
-            $element = $this->productCarts->filter($finder);
-            $this->productCarts->removeElement($product);
-            $this->removeProductCart($element->getValues()[0]);
+        /** @var ProductCart $productCart */
+        foreach ($this->productCarts as $productCart) {
+            if ($productCart->getProduct()->getId() == $product->getId()){
+                $this->removeProductCart($productCart);
+            }
         }
-
         return $this;
     }
 
@@ -106,13 +103,7 @@ class Cart
 
     public function removeProductCart(ProductCart $productCart): static
     {
-        if ($this->productCarts->removeElement($productCart)) {
-            // set the owning side to null (unless already changed)
-            if ($productCart->getCart() === $this) {
-                $productCart->setCart(null);
-            }
-        }
-
+        $this->productCarts->removeElement($productCart);
         return $this;
     }
 

@@ -25,4 +25,16 @@ class CustomerRepository extends ServiceEntityRepository implements CustomerRepo
         $this->manager->persist($customer);
         $this->manager->flush();
     }
+
+
+    public function findOneById(string $id): ?Customer
+    {
+        $query = $this->manager->createQuery(
+            'SELECT p
+    FROM Marketplace\Domain\Customer\Entity\Customer p
+    WHERE p.id = :id'
+        )->setParameter('id', $id);
+        $cart = $query->getOneOrNullResult();
+        return $cart;
+    }
 }
