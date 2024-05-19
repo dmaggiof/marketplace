@@ -21,9 +21,9 @@ class CartDetailsDTO
                 'name' => $productCart->getProduct()->getName(),
                 'description' => $productCart->getProduct()->getDescription(),
                 'quantity' => $productCart->getQuantity(),
-                'price' => $productCart->getPrice(),
+                'price' => $productCart->getPriceToShow()*$productCart->getQuantity(),
             ];
-            $cartTotal += $productCart->getPrice();
+            $cartTotal += $productCart->getPriceToShow() * $productCart->getQuantity();
         }
         $this->cartTotal = $cartTotal;
     }

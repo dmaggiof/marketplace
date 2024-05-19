@@ -74,6 +74,10 @@ class ProductCart
     {
         return $this->price;
     }
+    public function getPriceToShow(): ?int
+    {
+        return $this->price/100;
+    }
 
     public function setPrice(int $price): static
     {
