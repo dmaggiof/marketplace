@@ -1,5 +1,6 @@
 <?php
 namespace Marketplace\Application\Customer;
+use Marketplace\Domain\Cart\DTO\CartDetailsDTO;
 use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Customer\DTO\CustomerPurchasing;
 use Marketplace\Domain\Customer\Entity\Customer;
@@ -19,14 +20,21 @@ class MakePurchase {
         $this->orderRepository = $orderRepository;
     }
 
-    public function execute(CustomerPurchasing $customerPurchasing)
+    /**
+     * @throws CustomerHasNoAddressConfigured
+     */
+    public function execute(CustomerPurchasing $customerPurchasing): CartDetailsDTO
     {
         $customer = $this->customerRepository->findOneBy(["id"=> $customerPurchasing->getUserId()]);
 
-        $cart = $customer->getCart();
+        $cart = $customer->getPendingCart();
+
         $this->completeCart($customer);
 
         $this->convertCartToOrder($cart, $customer);
+
+        $cartDetailsDto = new CartDetailsDTO($cart->getProductCarts()->toArray());
+        return $cartDetailsDto;
     }
 
     private function convertCartToOrder(Cart $cart, Customer $customer)

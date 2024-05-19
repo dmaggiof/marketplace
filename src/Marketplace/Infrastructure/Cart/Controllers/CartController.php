@@ -4,6 +4,7 @@ namespace Marketplace\Infrastructure\Cart\Controllers;
 
 use Marketplace\Application\Cart\GetProductsInCart;
 use Marketplace\Domain\Cart\DTO\GetProductsInCartDTO;
+use Marketplace\Infrastructure\Cart\SessionManager\CartSessionStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -11,9 +12,18 @@ use Symfony\Component\Routing\Attribute\Route;
 class CartController extends AbstractController
 {
     #[Route('/cart', name: 'cart_details')]
-    public function index(GetProductsInCart $service): Response
+    public function index(GetProductsInCart $service, CartSessionStorage $cartSessionStorage): Response
     {
-        $dto = new GetProductsInCartDTO(1,1);
+        $customer = $this->getUser();
+        if ($customer) {
+            $customerId = $customer->getId();
+            $cartId = $cartSessionStorage->getCart();
+        } else {
+            $customerId = null;
+            $cartId = $cartSessionStorage->getCart();
+        }
+
+        $dto = new GetProductsInCartDTO($customerId, $cartId);
         $data = $service->execute($dto);
         $products = $data->getProducts();
         $cartTotal = $data->cartTotal;
