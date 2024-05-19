@@ -142,8 +142,7 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
             $cart->setCustomerId($this);
             $this->cart->add($cart);
         } else {
-//            dd($cartsInPendingStatus->first());
-            $cart = $cartsInPendingStatus->first();
+            $cart = $cartsInPendingStatus->last();
         }
         return $cart;
     }

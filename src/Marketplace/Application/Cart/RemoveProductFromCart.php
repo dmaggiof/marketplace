@@ -26,7 +26,6 @@ class RemoveProductFromCart {
                 return;
             }
         }
-        $cart = $addProductToCartDTO->getCartId() ? $this->cartRepository->findOneById($addProductToCartDTO->getCartId()) : null;
 
         if (is_null($cart)){
             return;
