@@ -14,7 +14,7 @@ class ProductDetails
     {
         $product = $this->productRepository->findById($id);
         if (!$product) {
-            throw new \Exception("No existe e lplroducto");
+            throw new \Exception("No existe el producto");
         }
         return $product[0];
     }
