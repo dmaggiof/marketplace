@@ -32,7 +32,7 @@ class RemoveProductFromCart {
         }
         $product = $this->productRepository->findOneById($addProductToCartDTO->getProductId());
         $cart->removeProductFromCart($product);
-//dd($cart);
+
         $this->cartRepository->save($cart);
     }
 }
