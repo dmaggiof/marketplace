@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mysql:3306
--- Tiempo de generación: 19-05-2024 a las 12:03:10
+-- Tiempo de generación: 19-05-2024 a las 18:07:54
 -- Versión del servidor: 8.0.37
 -- Versión de PHP: 8.2.8
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `cart` (
   `id` int NOT NULL,
   `customer_id_id` int DEFAULT NULL,
-  `status` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -42,9 +42,9 @@ CREATE TABLE `cart` (
 
 CREATE TABLE `customer` (
   `id` int NOT NULL,
-  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -66,7 +66,7 @@ INSERT INTO `customer` (`id`, `name`, `email`, `password`) VALUES
 CREATE TABLE `customer_address` (
   `id` int NOT NULL,
   `customer_id` int DEFAULT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `default_address` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -89,7 +89,7 @@ INSERT INTO `customer_address` (`id`, `customer_id`, `address`, `default_address
 CREATE TABLE `order` (
   `id` int NOT NULL,
   `customer_id_id` int NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -115,21 +115,22 @@ CREATE TABLE `order_line` (
 CREATE TABLE `product` (
   `id` int NOT NULL,
   `supplier_id_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` int NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stock_quantity` int NOT NULL
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stock_quantity` int NOT NULL,
+  `version` int NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `product`
 --
 
-INSERT INTO `product` (`id`, `supplier_id_id`, `name`, `price`, `description`, `stock_quantity`) VALUES
-(1, 1, 'producto1', 1000, 'descripcion producto 1', 3),
-(2, 1, 'producto2', 1000, 'descripcion producto 2', 3),
-(3, 1, 'producto3', 1000, 'descripcion producto 3', 3),
-(4, 1, 'producto4', 1000, 'descripcion producto 4', 3);
+INSERT INTO `product` (`id`, `supplier_id_id`, `name`, `price`, `description`, `stock_quantity`, `version`) VALUES
+(1, 1, 'producto1', 1000, 'descripcion producto 1', 1, 6),
+(2, 1, 'producto2', 1000, 'descripcion producto 2', 1, 2),
+(3, 1, 'producto3', 1000, 'descripcion producto 3', 3, 1),
+(4, 1, 'producto4', 1000, 'descripcion producto 4', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -153,9 +154,9 @@ CREATE TABLE `product_cart` (
 
 CREATE TABLE `supplier` (
   `id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cif` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cif` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -233,7 +234,7 @@ ALTER TABLE `supplier`
 -- AUTO_INCREMENT de la tabla `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `customer`
@@ -251,13 +252,13 @@ ALTER TABLE `customer_address`
 -- AUTO_INCREMENT de la tabla `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT de la tabla `order_line`
 --
 ALTER TABLE `order_line`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT de la tabla `product`
@@ -269,7 +270,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT de la tabla `product_cart`
 --
 ALTER TABLE `product_cart`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=420;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=448;
 
 --
 -- AUTO_INCREMENT de la tabla `supplier`
