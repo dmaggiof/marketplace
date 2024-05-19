@@ -4,13 +4,19 @@ namespace Marketplace\Domain\Customer\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Exception;
+use Marketplace\Domain\Cart\Exceptions\CantEditAddressOnFinishedCart;
+use Marketplace\Domain\Cart\Exceptions\CartIsEmpty;
 use Marketplace\Domain\Cart\Entity\Cart;
+use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
 use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Exceptions\CustomerHasNoAddressConfigured;
 use Marketplace\Domain\Order\Entity\Order;
 use Marketplace\Domain\Product\Entity\Product;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class Customer
+class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 {
     private ?int $id = null;
 
@@ -28,6 +34,7 @@ class Customer
      * @var Collection<int, CustomerAddress>
      */
     private Collection $customerAddresses;
+    private string $plainPassword;
 
     public function __construct()
     {
@@ -77,6 +84,16 @@ class Customer
         return $this;
     }
 
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+    }
+
     /**
      * @return Collection<int, Order>
      */
@@ -109,9 +126,31 @@ class Customer
 
     public function getCart(): Cart
     {
-        return $this->cart->first();
+        return $this->cart->last();
     }
 
+    public function getPendingCart(): Cart
+    {
+        $finder = function($cart){
+            return $cart->getStatus() === 'pending';
+        };
+        $cartsInPendingStatus = $this->cart->filter($finder);
+
+        if ($cartsInPendingStatus->isEmpty()) {
+            $cart = new Cart();
+            $cart->setStatus(Cart::PENDING_CART);
+            $cart->setCustomerId($this);
+            $this->cart->add($cart);
+        } else {
+//            dd($cartsInPendingStatus->first());
+            $cart = $cartsInPendingStatus->first();
+        }
+        return $cart;
+    }
+
+    /**
+     * @throws Exception
+     */
     public function addCart(Cart $cart): static
     {
         if ($this->cart->isEmpty()) {
@@ -123,7 +162,7 @@ class Customer
             };
             $cartsInPendingStatus = $this->cart->filter($finder);
             if (!empty($cartsInPendingStatus)){
-                throw new \Exception("Ya tienes un carrito activo");
+                throw new Exception("Ya tienes un carrito activo");
             }
             $this->cart->add($cart);
             $cart->setCustomerId($this);
@@ -144,6 +183,11 @@ class Customer
         return $this;
     }
 
+    /**
+     * @throws CantHaveMoreThanThreeProductsInCart
+     * @throws CantAddProductsToFinishedCart
+     * @throws Exception
+     */
     public function addProductToCart(Product $product, int $quantity): static
     {
         if ($this->cart->isEmpty()) {
@@ -176,12 +220,19 @@ class Customer
         return count($this->getCart()->getProductCarts());
     }
 
-    public function makePurchase()
+    /**
+     * @throws CustomerHasNoAddressConfigured
+     * @throws CantEditAddressOnFinishedCart
+     */
+    public function makePurchase(): void
     {
         if (!$this->getCustomerDefaultAddress()) {
             throw new CustomerHasNoAddressConfigured;
         }
-        $this->getCart()->markAsCompleted();
+        if ($this->getPendingCart()->getProductCarts()->isEmpty()) {
+            throw new CartIsEmpty;
+        }
+        $this->getPendingCart()->markAsCompleted();
 
     }
 
@@ -244,5 +295,20 @@ class Customer
         $this->customerAddresses->removeElement($customerAddress);
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return [];
+    }
+
+    public function eraseCredentials(): void
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
     }
 }
