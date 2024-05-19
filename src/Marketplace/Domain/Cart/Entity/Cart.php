@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
 use Marketplace\Domain\Cart\Exceptions\CantEditAddressOnFinishedCart;
+use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Product\Entity\Product;
 use Marketplace\Domain\ProductCart\Entity\ProductCart;
@@ -63,7 +64,12 @@ class Cart
         if ($this->status === self::FINISHED_CART) {
             throw new CantAddProductsToFinishedCart();
         }
-        if (!$this->productCarts->contains($product)) {
+
+        if ($this->getProductCarts()->count() === 3 && !$this->cartContainsProduct($product)) {
+            throw new CantHaveMoreThanThreeProductsInCart();
+        }
+
+        if (!$this->cartContainsProduct($product)) {
             $productCart = new ProductCart();
             $productCart->setCart($this);
             $productCart->setProduct($product);
@@ -75,6 +81,15 @@ class Cart
             $this->productCarts->add($productCart);
 
             $this->addProductCart($productCart);
+        } else {
+            $cartItems = $this->getProductCarts()->filter(function(ProductCart $cartItem) use ($product) {
+                return $cartItem->getProduct()->getId() === $product->getId();
+            });
+            if ($cartItems->count()) {
+                foreach ($cartItems as $cartItem) {
+                    $cartItem->setQuantity($cartItem->getQuantity() + $quantity);
+                }
+            }
         }
 
         return $this;
@@ -132,7 +147,10 @@ class Cart
         $this->address = $address;
     }
 
-    public function markAsCompleted()
+    /**
+     * @throws CantEditAddressOnFinishedCart
+     */
+    public function markAsCompleted(): void
     {
         if (is_null($this->address)) {
             $this->setAddress($this->customer_id->getCustomerDefaultAddress()->getAddress());
@@ -140,5 +158,14 @@ class Cart
         $this->setStatus(self::FINISHED_CART);
     }
 
+    private function cartContainsProduct(Product $product): bool
+    {
+        foreach ($this->getProductCarts() as $productCart) {
+            if ($productCart->getProduct()->getId() === $product->getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
