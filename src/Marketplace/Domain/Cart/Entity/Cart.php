@@ -74,7 +74,7 @@ class Cart
             $productCart->setCart($this);
             $productCart->setProduct($product);
             $productCart->setQuantity($quantity);
-            $productCart->setPrice($product->getPrice()*$quantity);
+            $productCart->setPrice($product->getPrice());
             if (!$this->status) {
                 $this->status=self::PENDING_CART;
             }
