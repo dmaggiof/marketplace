@@ -127,10 +127,10 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `supplier_id_id`, `name`, `price`, `description`, `stock_quantity`, `version`) VALUES
-(1, 1, 'producto1', 1000, 'descripcion producto 1', 1, 6),
-(2, 1, 'producto2', 1000, 'descripcion producto 2', 1, 2),
-(3, 1, 'producto3', 1000, 'descripcion producto 3', 3, 1),
-(4, 1, 'producto4', 1000, 'descripcion producto 4', 3, 1);
+(1, 1, 'producto1', 1000, 'descripcion producto 1', 15, 1),
+(2, 1, 'producto2', 1000, 'descripcion producto 2', 15, 1),
+(3, 1, 'producto3', 1000, 'descripcion producto 3', 15, 1),
+(4, 1, 'producto4', 1000, 'descripcion producto 4', 15, 1);
 
 -- --------------------------------------------------------
 

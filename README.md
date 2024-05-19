@@ -10,12 +10,21 @@ Aplicación que simula un marketplace siguiendo patrones de DDD y arquitectura h
 ### Despliegue del proyecto en entorno local
 Teniendo docker instalado, ejecutaremos los siguientes comandos:
 - Clonar el repostiorio: `git clone https://github.com/dmaggiof/marketplace.git`
-- Instalar dependencias: `make install-deps`
-- Preparar y arrancar contenedores de docker: `make prepare'
+- Instalar dependencias: `composer install`
+- Preparar y arrancar contenedores de docker: `docker compose up`. 
+
+Si tenemos disponible el comando `make` en nuestro equipo podemos ejecutar `make up` para levantar los contenedores 
 
 ### Ejecución de los tests
 
-`make test'
+Si tenemos disponible el comando `make` en nuestro equipo podemos ejecutar el siguiente comando para ejecutar todos los tests:
+`make test`
+
+De lo contrario, hay que acceder al docker: 
+`docker compose exec web bash`
+
+Y desde ahí:
+`vendor/bin/phpunit`
 
 ## Arquitectura
 
