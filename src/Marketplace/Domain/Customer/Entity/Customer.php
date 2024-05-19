@@ -237,9 +237,10 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
 
         foreach ($this->getPendingCart()->getProductCarts() as $itemCart) {
             $currentQuantity =$itemCart->getProduct()->getStockQuantity();
-            if ($itemCart->getProduct()->setStockQuantity($currentQuantity- $itemCart->getQuantity())) {
+            if ($currentQuantity<$itemCart->getQuantity()){
                 throw new InsufficientStockForProduct($itemCart->getProduct()->getName());
             }
+            $itemCart->getProduct()->setStockQuantity($currentQuantity- $itemCart->getQuantity());
         }
     }
 

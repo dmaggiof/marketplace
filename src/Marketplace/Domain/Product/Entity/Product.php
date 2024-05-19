@@ -3,6 +3,8 @@
 namespace Marketplace\Domain\Product\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Version;
 use Marketplace\Domain\Supplier\Entity\Supplier;
 use Marketplace\Infrastructure\Product\Repository\ProductRepository;
 
@@ -25,6 +27,9 @@ class Product
 
     #[ORM\Column]
     private ?int $stock_quantity = null;
+
+    #[Version, Column(type: 'integer')]
+    private ?int $version = null;
 
     #[ORM\ManyToOne(cascade:['persist','remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -100,5 +105,15 @@ class Product
         $this->supplier_id = $supplier_id;
 
         return $this;
+    }
+
+    public function getVersion(): ?int
+    {
+        return $this->version;
+    }
+
+    public function setVersion(?int $version): void
+    {
+        $this->version = $version;
     }
 }
