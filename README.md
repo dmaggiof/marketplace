@@ -21,7 +21,7 @@ Se separa el dominio de los detalles de infraestructura siguiendo prácticas de 
 
 #### Patrones de DDD
 
-El proyecto marketplace se separa en dos bounded context distintos, uno para proveedores (sin desarrollar) y otro para la tienda online. 
+El proyecto tiene actualmente un único bounded context llamado Marketplace.  uno para proveedores (sin desarrollar) y otro para la tienda online. 
 
 La idea del bounded context de proveedores es que estos puedan subir y gestionar sus productos, teniendo en cuenta
 que puede haber proveedores con un gran tráfico de productos.
