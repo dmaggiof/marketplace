@@ -1,6 +1,9 @@
 {% extends 'Web/Templates/base.html.twig' %}
 {% block body %}
 
+{% if error is not empty %}
+    Error con producto {{ error }}
+{% endif %}
 {% if products is empty %}
     No tienes productos en el carrito. <a href="{{ path('list_products') }}">Ir al listado de productos </a>
 {% else %}

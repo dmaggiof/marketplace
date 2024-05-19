@@ -1,0 +1,15 @@
+{% extends 'Web/Templates/base.html.twig' %}
+
+
+{% block body %}
+
+
+    <div class="alert alert-danger">Ha ocurrido un error procesando la compra
+
+    <h6> No hay suficiente stock del siguiente producto: {{ error }}</h6>
+
+    </div>
+
+<a href="{{ path('cart_details') }}"    >Volver al carrito</a>
+
+{% endblock %}

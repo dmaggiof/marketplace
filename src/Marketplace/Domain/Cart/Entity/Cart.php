@@ -8,6 +8,7 @@ use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
 use Marketplace\Domain\Cart\Exceptions\CantEditAddressOnFinishedCart;
 use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Entity\Customer;
+use Marketplace\Domain\Customer\Exceptions\InsufficientStockForProduct;
 use Marketplace\Domain\Product\Entity\Product;
 use Marketplace\Domain\ProductCart\Entity\ProductCart;
 
@@ -59,6 +60,14 @@ class Cart
         return $this->productCarts;
     }
 
+    /**
+     * @param Product $product
+     * @param int $quantity
+     * @return $this
+     * @throws CantAddProductsToFinishedCart
+     * @throws CantHaveMoreThanThreeProductsInCart
+     * @throws InsufficientStockForProduct
+     */
     public function addProductToCart(Product $product, int $quantity): static
     {
         if ($this->status === self::FINISHED_CART) {
@@ -68,7 +77,7 @@ class Cart
         if ($this->getProductCarts()->count() === 3 && !$this->cartContainsProduct($product)) {
             throw new CantHaveMoreThanThreeProductsInCart();
         }
-
+        $this->assertThereIsEnoughStockOrFail($product, $quantity);
         if (!$this->cartContainsProduct($product)) {
             $productCart = new ProductCart();
             $productCart->setCart($this);
@@ -149,9 +158,13 @@ class Cart
 
     /**
      * @throws CantEditAddressOnFinishedCart
+     * @throws InsufficientStockForProduct
      */
     public function markAsCompleted(): void
     {
+        foreach ($this->getProductCarts() as $itemCart) {
+            $this->assertThereIsEnoughStockOrFail($itemCart->getProduct(), $itemCart->getQuantity());
+        }
         if (is_null($this->address)) {
             $this->setAddress($this->customer_id->getCustomerDefaultAddress()->getAddress());
         }
@@ -166,6 +179,17 @@ class Cart
             }
         }
         return false;
+    }
+
+    /**
+     * @return void
+     * @throws InsufficientStockForProduct
+     */
+    public function assertThereIsEnoughStockOrFail(Product $product, int $quantity): void
+    {
+        if ($product->getStockQuantity() < $quantity) {
+            throw new InsufficientStockForProduct($product->getName());
+        }
     }
 
 }

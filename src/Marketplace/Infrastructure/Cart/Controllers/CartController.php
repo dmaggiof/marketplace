@@ -29,7 +29,8 @@ class CartController extends AbstractController
         $cartTotal = $data->cartTotal;
         return $this->render('Cart/Templates/cart_details.html.twig', [
             'products' => $products,
-            'cartTotal' => $cartTotal
+            'cartTotal' => $cartTotal,
+            'error' => ''
         ]);
     }
 }

@@ -6,6 +6,7 @@ use Marketplace\Application\Cart\AddProductToCart;
 use Marketplace\Application\Cart\DTO\AddProductToCartDTO;
 use Marketplace\Application\Product\ProductDetails;
 use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
+use Marketplace\Domain\Customer\Exceptions\InsufficientStockForProduct;
 use Marketplace\Domain\Product\Exceptions\ProductNotExists;
 use Marketplace\Infrastructure\Cart\SessionManager\CartSessionStorage;
 use Marketplace\Infrastructure\Product\Form\Type\AddToCartType;
@@ -50,6 +51,12 @@ class ProductDetailsController extends AbstractController
                     'product' => $product,
                     'form' => $form->createView(),
                     'error' => 'No puedes añadir más de 3 productos al carrito'
+                ]);
+            }catch (InsufficientStockForProduct $e) {
+                return $this->render('Product/Templates/product_details.html.twig', [
+                    'product' => $product,
+                    'form' => $form->createView(),
+                    'error' => 'No hay suficiente stock del producto '.$e->product
                 ]);
             }
             $cartSessionStorage->setCart($cartId);

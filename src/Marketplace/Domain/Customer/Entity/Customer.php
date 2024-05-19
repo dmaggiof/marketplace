@@ -11,6 +11,7 @@ use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
 use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Exceptions\CustomerHasNoAddressConfigured;
+use Marketplace\Domain\Customer\Exceptions\InsufficientStockForProduct;
 use Marketplace\Domain\Order\Entity\Order;
 use Marketplace\Domain\Product\Entity\Product;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -231,8 +232,15 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->getPendingCart()->getProductCarts()->isEmpty()) {
             throw new CartIsEmpty;
         }
+
         $this->getPendingCart()->markAsCompleted();
 
+        foreach ($this->getPendingCart()->getProductCarts() as $itemCart) {
+            $currentQuantity =$itemCart->getProduct()->getStockQuantity();
+            if ($itemCart->getProduct()->setStockQuantity($currentQuantity- $itemCart->getQuantity())) {
+                throw new InsufficientStockForProduct($itemCart->getProduct()->getName());
+            }
+        }
     }
 
     public function setId(int $id): static
