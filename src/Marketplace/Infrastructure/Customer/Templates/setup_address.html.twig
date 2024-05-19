@@ -1,0 +1,26 @@
+{% extends 'Web/Templates/base.html.twig' %}
+
+
+{% block body %}
+
+
+    <div class="col-md-8">
+
+
+        {{ form_start(form, {'attr': {'class': 'mt-2 p-2 bg-light'}}) }}
+        <div class="form-group col-md-8 inline">
+            <label class="form-group mb-4 md-8 inline">Nueva dirección para los envíos:</label>
+                {{ form_widget(form.address, {
+                    'attr': {
+                        'class': 'form-control mb-4 ' ~ (form.address.vars.valid ? '' : 'is-invalid')
+                    }
+                }) }}
+
+            <button class="btn btn-primary btn-block mb-4" type="submit">
+                Guardar
+            </button>
+        </div>
+        {{ form_errors(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

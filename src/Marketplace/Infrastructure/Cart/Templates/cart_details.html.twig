@@ -1,16 +1,38 @@
+{% extends 'Web/Templates/base.html.twig' %}
+{% block body %}
+
 {% if products is empty %}
     No tienes productos en el carrito. <a href="{{ path('list_products') }}">Ir al listado de productos </a>
 {% else %}
-    {% for product in products %}
-        <p>
-            {{ product.id }}
-            {{ product.name }}
-            {{ product.description }}
-            {{ product.quantity }}
-            {{ product.price }}
-            <a href="{{ path('remove_product_from_cart', {id: product.id }) }}">Eliminar</a>
-        </p>
+    <div class="product-list">
+        <h2>Carrito de la compra</h2>
+    <hr class="my-4">
+        {% for product in products %}
+            <div class="row mb-4 d-flex justify-content-between align-items-center">
+                <div class="col-md-3 col-lg-3 col-xl-3">
+                    <h6 class="text-black mb-0">Item: {{ product.name }}</h6>
+                </div>
+                <div class="col-md-1 col-lg-1 col-xl-1 d-flex">
+                    <input id="form1" min="0" name="quantity" value="{{ product.quantity }}" type="text" class="form-control form-control-sm">
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                    <h6 class="mb-0">{{ product.price }} €</h6>
+                </div>
+                <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                    <a href="{{ path('remove_product_from_cart', {id: product.id }) }}">Eliminar del carrito</a>
+                </div>
+{#                <div class="col-md-1 col-lg-1 col-xl-1 text-end">#}
+{#                    <a href="#!" class="text-muted"><i class="fas fa-times"></i></a>#}
+{#                </div>#}
+            </div>
 
-    {% endfor %}
-    Total: {{ cartTotal }}
+            <hr class="my-4">
+        {% endfor %}
+    <div class="d-flex mb-5">
+        <h5 class="text-uppercase">Total:</h5>
+        <h5>{{ cartTotal }}€</h5>
+    </div>
+
+    <a href="{{ path('make_purchase') }}">Finalizar compra</a>
 {% endif %}
+{% endblock %}

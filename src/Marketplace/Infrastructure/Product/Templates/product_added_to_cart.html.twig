@@ -1,4 +1,9 @@
-    <p>
+{% extends 'Web/Templates/base.html.twig' %}
+
+{% block body %}
+
+<p>
         Producto añadido
     </p>
 <a href="{{ path('list_products') }}">Volver al listado de productos</a>
+{% endblock %}

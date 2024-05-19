@@ -1,11 +1,21 @@
-{% for product in products %}
-    <p>
-        <a href="{{ path('product_details', {id: product.id })}}">{{ product.name }}</a>
-{#        <a href="">{{ product.name }}</a>#}
-    <br/>
-        {{  product.description }}
-    <br/>
-        {{  product.price }}
-    </p>
+{% extends 'Web/Templates/base.html.twig' %}
 
-{% endfor %}
+{% block body %}
+
+<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h2 class="display-4">Lista de Productos</h2>
+</div>
+    <div class="card-deck mb-3 text-center">
+        {% for product in products %}
+            <div class="card mb-4 box-shadow">
+                <h5><a href="{{ path('product_details', {id: product.id })}}">{{ product.name }}</a>
+                </h5>
+                <p>{{ product.name }}</p>
+                <p>{{ product.description }}</p>
+                <p>Precio: {{ product.price }} €</p>
+            </div>
+        {% endfor %}
+    </div>
+    <p>
+
+{% endblock %}

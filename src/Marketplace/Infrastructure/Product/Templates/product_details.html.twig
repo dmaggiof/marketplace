@@ -1,19 +1,24 @@
-<a href="{{ path('list_products') }}">Volver al listado de productos</a><br />
-<a href="{{ path('cart_details') }}">Ir al carrito</a>
+{% extends 'Web/Templates/base.html.twig' %}
+
+{% block body %}
 
 <div class="col-md-8">
-        <h1 class="mt-4 mt-md-0">{{ product.name }}</h1>
-        <h2>{{ product.price }} €</h2>
-        <hr>
-        <b>Description: </b>{{ product.description }}
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+        <h1 class="card-title">{{ product.name }}</h1>
+        <p class="card-text">Precio: {{ product.price }} €</p>
+    <p class="card-text">{{ product.description }}</p>
         {{ form_start(form, {'attr': {'class': 'mt-4 p-4 bg-light'}}) }}
-        <div class="form-group">
-            {{ form_label(form.quantity) }}
+        <div class="form-group col-md-2 inline">
+            <label>Quantity
             {{ form_widget(form.quantity, {
                 'attr': {
                     'class': 'form-control ' ~ (form.quantity.vars.valid ? '' : 'is-invalid')
                 }
-            }) }}
+            }) }}</label>
             <div class="invalid-feedback">
                 {{ form_errors(form.quantity) }}
             </div>
@@ -22,3 +27,4 @@
         {{ form_errors(form) }}
         {{ form_end(form) }}
     </div>
+{% endblock %}
