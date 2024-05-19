@@ -2,10 +2,9 @@
 
 namespace Marketplace\Infrastructure\Customer\Controllers;
 
+use Marketplace\Application\Customer\DTO\CustomerPurchasing;
 use Marketplace\Application\Customer\MakePurchase;
 use Marketplace\Domain\Customer\Exceptions\CustomerHasNoAddressConfigured;
-use Marketplace\Domain\Customer\Exceptions\CustomerMustSignInToFinishPurchase;
-use Marketplace\Domain\Customer\DTO\CustomerPurchasing;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

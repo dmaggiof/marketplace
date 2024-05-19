@@ -2,12 +2,10 @@
 
 namespace Tests\Marketplace\Application;
 
-use Exception;
 use Marketplace\Application\Cart\AddProductToCart;
-use Marketplace\Domain\Cart\DTO\AddProductToCartDTO;
+use Marketplace\Application\Cart\DTO\AddProductToCartDTO;
 use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
-use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Marketplace\Domain\Customer\DTO;
+namespace Marketplace\Application\Customer\DTO;
 
 class CustomerPurchasing
 {

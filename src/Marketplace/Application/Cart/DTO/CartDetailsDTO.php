@@ -1,8 +1,7 @@
 <?php
 
-namespace Marketplace\Domain\Cart\DTO;
+namespace Marketplace\Application\Cart\DTO;
 
-use Marketplace\Domain\Product\Entity\Product;
 use Marketplace\Domain\ProductCart\Entity\ProductCart;
 
 class CartDetailsDTO

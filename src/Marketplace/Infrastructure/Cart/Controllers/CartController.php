@@ -2,8 +2,8 @@
 
 namespace Marketplace\Infrastructure\Cart\Controllers;
 
+use Marketplace\Application\Cart\DTO\GetProductsInCartDTO;
 use Marketplace\Application\Cart\GetProductsInCart;
-use Marketplace\Domain\Cart\DTO\GetProductsInCartDTO;
 use Marketplace\Infrastructure\Cart\SessionManager\CartSessionStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

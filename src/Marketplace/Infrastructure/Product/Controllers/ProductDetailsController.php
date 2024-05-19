@@ -3,15 +3,14 @@
 namespace Marketplace\Infrastructure\Product\Controllers;
 
 use Marketplace\Application\Cart\AddProductToCart;
+use Marketplace\Application\Cart\DTO\AddProductToCartDTO;
 use Marketplace\Application\Product\ProductDetails;
-use Marketplace\Domain\Cart\DTO\AddProductToCartDTO;
 use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Product\Exceptions\ProductNotExists;
 use Marketplace\Infrastructure\Cart\SessionManager\CartSessionStorage;
 use Marketplace\Infrastructure\Product\Form\Type\AddToCartType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 

@@ -2,10 +2,8 @@
 
 namespace Marketplace\Infrastructure\Customer\Controllers;
 
+use Marketplace\Application\Customer\DTO\SetupNewAddressDTO;
 use Marketplace\Application\Customer\SetupNewAddress;
-use Marketplace\Domain\Cart\DTO\AddProductToCartDTO;
-use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
-use Marketplace\Domain\Customer\DTO\SetupNewAddressDTO;
 use Marketplace\Infrastructure\Customer\Infrastructure\Form\Type\SetupNewAddressType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

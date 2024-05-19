@@ -1,6 +1,6 @@
 <?php
 namespace Marketplace\Application\Customer;
-use Marketplace\Domain\Customer\DTO\SetupNewAddressDTO;
+use Marketplace\Application\Customer\DTO\SetupNewAddressDTO;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
 use Marketplace\Infrastructure\Customer\Infrastructure\Repository\CustomerRepository;
 use Marketplace\Infrastructure\Order\Repository\OrderRepository;

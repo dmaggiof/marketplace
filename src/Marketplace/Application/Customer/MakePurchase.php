@@ -1,8 +1,8 @@
 <?php
 namespace Marketplace\Application\Customer;
-use Marketplace\Domain\Cart\DTO\CartDetailsDTO;
+use Marketplace\Application\Cart\DTO\CartDetailsDTO;
+use Marketplace\Application\Customer\DTO\CustomerPurchasing;
 use Marketplace\Domain\Cart\Entity\Cart;
-use Marketplace\Domain\Customer\DTO\CustomerPurchasing;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Exceptions\CustomerHasNoAddressConfigured;
 use Marketplace\Domain\Order\Entity\Order;

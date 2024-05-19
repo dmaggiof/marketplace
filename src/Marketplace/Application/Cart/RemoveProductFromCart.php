@@ -1,7 +1,6 @@
 <?php
 namespace Marketplace\Application\Cart;
-use Marketplace\Domain\Cart\DTO\RemoveProductFromCartDTO;
-use Marketplace\Domain\Cart\Entity\Cart;
+use Marketplace\Application\Cart\DTO\RemoveProductFromCartDTO;
 use Marketplace\Domain\Cart\Repository\CartRepositoryInterface;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;
 use Marketplace\Domain\Product\Repository\ProductRepositoryInterface;

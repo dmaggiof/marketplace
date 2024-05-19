@@ -3,9 +3,9 @@
 namespace Tests\Marketplace\Application;
 
 use Marketplace\Application\Cart\AddProductToCart;
+use Marketplace\Application\Cart\DTO\AddProductToCartDTO;
+use Marketplace\Application\Cart\DTO\RemoveProductFromCartDTO;
 use Marketplace\Application\Cart\RemoveProductFromCart;
-use Marketplace\Domain\Cart\DTO\AddProductToCartDTO;
-use Marketplace\Domain\Cart\DTO\RemoveProductFromCartDTO;
 use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;

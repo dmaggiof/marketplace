@@ -1,8 +1,7 @@
 <?php
 namespace Marketplace\Application\Cart;
-use Doctrine\Common\Collections\Collection;
-use Marketplace\Domain\Cart\DTO\CartDetailsDTO;
-use Marketplace\Domain\Cart\DTO\GetProductsInCartDTO;
+use Marketplace\Application\Cart\DTO\CartDetailsDTO;
+use Marketplace\Application\Cart\DTO\GetProductsInCartDTO;
 use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Cart\Repository\CartRepositoryInterface;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;

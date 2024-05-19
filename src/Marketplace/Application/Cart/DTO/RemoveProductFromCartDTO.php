@@ -1,6 +1,6 @@
 <?php
 
-namespace Marketplace\Domain\Cart\DTO;
+namespace Marketplace\Application\Cart\DTO;
 
 class RemoveProductFromCartDTO
 {
