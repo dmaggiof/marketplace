@@ -4,7 +4,7 @@ namespace Marketplace\Domain\Cart\DTO;
 
 class RemoveProductFromCartDTO
 {
-    public function __construct(private string $productId, private string $customerId, private ?int $cartId = null){}
+    public function __construct(private string $productId, private ?string $customerId, private ?int $cartId = null){}
 
     public function getProductId(): string
     {
@@ -16,7 +16,7 @@ class RemoveProductFromCartDTO
         return $this->cartId;
     }
 
-    public function getCustomerId(): string
+    public function getCustomerId(): ?string
     {
         return $this->customerId;
     }
