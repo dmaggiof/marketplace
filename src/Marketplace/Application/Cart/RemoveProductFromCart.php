@@ -12,11 +12,25 @@ class RemoveProductFromCart {
 
     public function execute(RemoveProductFromCartDTO $addProductToCartDTO): void
     {
+
+        if ($addProductToCartDTO->getCustomerId()) {
+            $customer = $this->customerRepository->findOneById($addProductToCartDTO->getCustomerId());
+
+            if ($customer) {
+                $cart = $customer->getPendingCart();
+            }
+        }
+
+        if (empty($cart)){
+            $cart = $this->cartRepository->findOneById($addProductToCartDTO->getCartId());
+            if (empty($cart)) {
+                return;
+            }
+        }
         $cart = $addProductToCartDTO->getCartId() ? $this->cartRepository->findOneById($addProductToCartDTO->getCartId()) : null;
-        $customer = $this->customerRepository->findOneById($addProductToCartDTO->getCustomerId());
 
         if (is_null($cart)){
-            $cart = new Cart($customer);
+            return;
         }
         $product = $this->productRepository->findOneById($addProductToCartDTO->getProductId());
         $cart->removeProductFromCart($product);

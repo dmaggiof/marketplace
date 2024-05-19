@@ -3,6 +3,7 @@ namespace Marketplace\Application\Cart;
 use Marketplace\Domain\Cart\DTO\AddProductToCartDTO;
 use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
+use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Cart\Repository\CartRepositoryInterface;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;
 use Marketplace\Domain\Product\Exceptions\ProductNotExists;
@@ -18,15 +19,25 @@ class AddProductToCart {
     /**
      * @throws ProductNotExists
      * @throws CantAddProductsToFinishedCart
+     * @throws CantHaveMoreThanThreeProductsInCart
      */
-    public function execute(AddProductToCartDTO $addProductToCartDTO): void
+    public function execute(AddProductToCartDTO $addProductToCartDTO): Cart
     {
-        $cart = $addProductToCartDTO->getCartId() ? $this->cartRepository->findOneById($addProductToCartDTO->getCartId()) : null;
-        $customer = $this->customerRepository->findOneById($addProductToCartDTO->getCustomerId());
+        if ($addProductToCartDTO->getCustomerId()) {
+            $customer = $this->customerRepository->findOneById($addProductToCartDTO->getCustomerId());
 
-        if (empty($cart)){
-            $cart = new Cart($customer);
+            if ($customer) {
+                $cart = $customer->getPendingCart();
+            }
         }
+        if (empty($cart)){
+            $cart = $this->cartRepository->findOneById($addProductToCartDTO->getCartId());
+            if (empty($cart)) {
+                $cart = new Cart();
+                $cart->setStatus(Cart::PENDING_CART);
+            }
+        }
+
         $product = $this->productRepository->findOneById($addProductToCartDTO->getProductId());
 
         if (!$product) {
@@ -35,5 +46,6 @@ class AddProductToCart {
         $cart->addProductToCart($product, $addProductToCartDTO->getQuantity());
 
         $this->cartRepository->save($cart);
+        return $cart;
     }
 }

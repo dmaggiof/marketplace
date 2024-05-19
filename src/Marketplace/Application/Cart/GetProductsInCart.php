@@ -13,9 +13,20 @@ class GetProductsInCart {
 
     public function execute(GetProductsInCartDTO $addProductToCartDTO): CartDetailsDTO
     {
-        $customer = $this->customerRepository->findOneById($addProductToCartDTO->getCustomerId());
-        $cart = $this->cartRepository->findOneById($addProductToCartDTO->getCartId());
+        $customer = null;
+        if ($addProductToCartDTO->getCustomerId()) {
+            $customer = $this->customerRepository->findOneById($addProductToCartDTO->getCustomerId());
 
+            if ($customer) {
+                $cart = $customer->getPendingCart();
+            }
+        }
+        if (!$customer) {
+            if (!$addProductToCartDTO->getCartId()) {
+                return new CartDetailsDTO([]);
+            }
+            $cart = $this->cartRepository->findOneById($addProductToCartDTO->getCartId());
+        }
         if (empty($cart)){
             $cart = new Cart($customer);
         }

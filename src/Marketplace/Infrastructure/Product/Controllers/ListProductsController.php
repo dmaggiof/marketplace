@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ListProductsController extends AbstractController
 {
-    #[Route('/products', name: 'list_products')]
+    #[Route('/', name: 'list_products')]
     public function index(ListProducts $service): Response
     {
         $products = $service->execute();

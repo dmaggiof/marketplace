@@ -8,6 +8,7 @@ use Marketplace\Application\Product\ProductDetails;
 use Marketplace\Domain\Cart\DTO\AddProductToCartDTO;
 use Marketplace\Domain\Cart\DTO\RemoveProductFromCartDTO;
 use Marketplace\Domain\Product\Exceptions\ProductNotExists;
+use Marketplace\Infrastructure\Cart\SessionManager\CartSessionStorage;
 use Marketplace\Infrastructure\Product\Form\Type\AddToCartType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,11 +22,17 @@ class DeleteProductFromCartController extends AbstractController
      * @throws \Exception
      */
     #[Route('/deleteProductFromCart/{id}', name: 'remove_product_from_cart')]
-    public function index(int $id , RemoveProductFromCart $removeProductFromCartService): Response
+    public function index(int $id , RemoveProductFromCart $removeProductFromCartService, CartSessionStorage $cartSessionStorage): Response
     {
         $productId = $id;
-        $cartId = 1;
-        $addProductToCartDTO = new RemoveProductFromCartDTO($productId, 1,$cartId);
+        $cartId = $cartSessionStorage->getCart();
+        $customer = $this->getUser();
+        if ($customer) {
+            $customerId = $customer->getId();
+        } else {
+            $customerId = null;
+        }
+        $addProductToCartDTO = new RemoveProductFromCartDTO($productId, $customerId,$cartId);
         $removeProductFromCartService->execute($addProductToCartDTO);
 
         return $this->redirectToRoute('cart_details');
