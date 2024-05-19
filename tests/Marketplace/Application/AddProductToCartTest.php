@@ -75,15 +75,12 @@ class AddProductToCartTest extends TestCase
         $this->prepareDatabase($customerRepository, $productRepository);
         $this->prepareFinishedCart($cartRepository);
 
-        $product1 = 1;
+        $product1 = $productRepository->findOneById(1);
         $customer = 1;
 
-        $service = new AddProductToCart($cartRepository, $productRepository, $customerRepository);
-
-        $productDTO = new AddProductToCartDTO($product1, 1, $customer, 1);
-
+        $cart = $cartRepository->findOneById(1);
         $this->expectException(CantAddProductsToFinishedCart::class);
-        $service->execute($productDTO);
+        $cart->addProductToCart($product1,1);
     }
 
     private function prepareDatabase(CustomerRepositoryInterface $customerRepository, InmemoryProductRepository $productRepository): void
@@ -139,6 +136,7 @@ class AddProductToCartTest extends TestCase
     private function prepareFinishedCart(CartRepository $cartRepository)
     {
         $cart = new Cart();
+        $cart->setId(1);
         $cart->setStatus(CART::FINISHED_CART);
         $cartRepository->save($cart);
     }
