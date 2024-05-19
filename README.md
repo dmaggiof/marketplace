@@ -32,11 +32,11 @@ Se separa el dominio de los detalles de infraestructura siguiendo prácticas de 
 
 #### Patrones de DDD
 
-El proyecto tiene actualmente un único bounded context llamado Marketplace. 
+El proyecto tiene actualmente un único bounded context llamado Marketplace, donde se concentran las operaciones habituales de un ecommerce (alta de usuarios, listado de productos, compras, etc). 
 
-Tratándose de un marketplace, podría crearse uno nuevo para proveedores, de forma que estos puedan gestionar el inventario de los productos que ponen a la venta. El motivo de esta separación es que puede haber proveedores con un gran cantidad de productos que tengan necesidad especiales.
+Tratándose de un marketplace, podría crearse un nuevo bounded context para los proveedores, de forma que estos puedan gestionar el inventario de los productos que ponen a la venta. El motivo de esta separación es que puede darse el caso de proveedores que tengan necesidad especiales.
 
-El bounded context de la tienda está separado en distintos módulos: Customer, Cart, Order y Product.
+El bounded context de la tienda está separado en distintos módulos que representan sus conceptos básicos: Customer, Cart, Order y Product.
 
 Cada módulo tiene una entidad principal, que coincide con el nombre del módulo. En el caso de los módulos Customer y Order tenemos dos agregados:
 
@@ -74,13 +74,5 @@ src/Marketplace
 `-- Web
 
 
-Se siguen patrones de la arquitectura, por ejemplo en la capa de infraestructura cada repositorio implementa una interfaz para facilitar cambios en la infraestructura y el testing del proyecto. 
-Las interfaces son del dominio, por lo tanto las encontraremos en la carpeta src/Marketplace/Domain del módulo que corresponda.
-
-
-
-
-
-
-
-
+Se siguen patrones de diseño y buenas prácticas, por ejemplo en la capa de infraestructura cada repositorio implementa una interfaz para facilitar cambios en la infraestructura y el testing del proyecto. 
+Las interfaces pertenecen al dominio, por lo tanto las encontraremos en la carpeta src/Marketplace/Domain del módulo que corresponda.
