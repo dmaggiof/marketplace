@@ -1,0 +1,39 @@
+{% extends 'Web/Templates/base.html.twig' %}
+
+{% block title %}Inicia sesión{% endblock %}
+
+{% block body %}
+    <section class="class=w-100 p-4 d-flex justify-content-center pb-4">
+    <form method="post" style="width: 22rem;">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-3">
+                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+            </div>
+        {% endif %}
+
+        <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
+
+        <label for="username">Email</label>
+        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+        </div>
+        <div data-mdb-input-init="" class="form-outline mb-4" data-mdb-input-initialized="true">
+            <label for="password">Password</label>
+            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+        </div>
+
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+
+        <button class="btn btn-primary btn-block mb-4" type="submit">
+            Sign in
+        </button>
+   <a href="{{ path('user_registration') }}">Regístrate si no eres usuario</a>
+    </form>
+    </section>
+{% endblock %}
