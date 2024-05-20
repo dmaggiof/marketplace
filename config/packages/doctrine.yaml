@@ -26,10 +26,10 @@ doctrine:
                 prefix: 'Marketplace\Domain\Cart\Entity'
                 alias: Cart
             Product:
-                type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Marketplace/Domain/Product/Entity'
-                prefix: 'Marketplace\Domain\Product'
+                type: xml
+                dir: '%kernel.project_dir%/src/Marketplace/Infrastructure/Product/Mapping'
+                prefix: 'Marketplace\Domain\Product\Entity'
                 alias: Product
             ProductCart:
                 type: attribute

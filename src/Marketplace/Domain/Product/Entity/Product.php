@@ -8,31 +8,20 @@ use Doctrine\ORM\Mapping\Version;
 use Marketplace\Domain\Supplier\Entity\Supplier;
 use Marketplace\Infrastructure\Product\Repository\ProductRepository;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
     private ?int $price = null;
 
-    #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column]
     private ?int $stock_quantity = null;
 
-    #[Version, Column(type: 'integer')]
     private ?int $version = null;
 
-    #[ORM\ManyToOne(cascade:['persist','remove'])]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Supplier $supplier_id = null;
 
 
