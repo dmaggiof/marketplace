@@ -98,6 +98,15 @@ src/Marketplace
 Se siguen patrones de diseño y buenas prácticas, por ejemplo en la capa de infraestructura cada repositorio implementa una interfaz para facilitar cambios en la infraestructura y el testing del proyecto. 
 Las interfaces pertenecen al dominio, por lo tanto las encontraremos en la carpeta src/Marketplace/Domain del módulo que corresponda.
 
+De las siguientes entidades de dominio se han extraído los datos del modelo a ficheros xml de configuración en la capa de infraestructura (en la carpeta Mapping de cada objeto):
+- Customer
+- CustomerAddress
+- Cart
+- Product  
+
+Lo mismo se debería hacer para el resto de entidades en el caso de una aplicación en producción. 
+
+
 ### URLs disponibles
 
 /: Lista los productos disponibles para comprar  
@@ -109,3 +118,8 @@ Las interfaces pertenecen al dominio, por lo tanto las encontraremos en la carpe
 /register: Alta de cliente  
 /setup_address: Configurar una nueva dirección para el cliente  
 logout                      
+
+
+### Esquema de bbdd
+
+[Enlace al esquema](docs/diagrama-er.md)
