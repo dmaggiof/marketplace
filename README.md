@@ -72,7 +72,7 @@ Para aquellas acciones cuya lógica no pertenece a una única entidad, como por 
 
 Como se comenta en la sección anterior de patrones tácticos, se ha hecho una separación entre casos de uso, elementos de dominio e infraestructura. El código contenido en src/Marketplace
 está organizado de esa manera, y en cada capa tenemos una carpeta que representa a cada uno de los elementos de nuestro negocio:
-
+```
 src/Marketplace
 |-- Application
 |   |-- Cart
@@ -93,10 +93,19 @@ src/Marketplace
 |-- ProductCart
 |-- Supplier
 `-- Web
-
+```
 
 Se siguen patrones de diseño y buenas prácticas, por ejemplo en la capa de infraestructura cada repositorio implementa una interfaz para facilitar cambios en la infraestructura y el testing del proyecto. 
 Las interfaces pertenecen al dominio, por lo tanto las encontraremos en la carpeta src/Marketplace/Domain del módulo que corresponda.
 
-### Acciones disponibles
+### URLs disponibles
 
+/: lista los productos disponibles para comprar
+/deleteProductFromCart: Elimina un producto del carrito  
+/product/{id}: Muestra detalles de un producto y permite añadirlo al carrito
+/cart: Ver productos en el carrito
+/make_purchase: Finalizar carrito
+/login: Login de cliente   
+/register: Alta de cliente
+/setup_address: Configurar una nueva dirección para el cliente               
+/logout                      
