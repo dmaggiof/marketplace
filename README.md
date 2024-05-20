@@ -122,4 +122,4 @@ logout
 
 ### Esquema de bbdd
 
-[Enlace al esquema](docs/diagrama-er.md)
+[Enlace al esquema](docs/diagrama-er.png)
