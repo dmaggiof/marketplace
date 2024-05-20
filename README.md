@@ -100,12 +100,12 @@ Las interfaces pertenecen al dominio, por lo tanto las encontraremos en la carpe
 
 ### URLs disponibles
 
-/: lista los productos disponibles para comprar
-/deleteProductFromCart: Elimina un producto del carrito  
-/product/{id}: Muestra detalles de un producto y permite añadirlo al carrito
-/cart: Ver productos en el carrito
-/make_purchase: Finalizar carrito
-/login: Login de cliente   
-/register: Alta de cliente
-/setup_address: Configurar una nueva dirección para el cliente               
-/logout                      
+/: Lista los productos disponibles para comprar  
+/deleteProductFromCart: Elimina un producto del carrito    
+/product/{id}: Muestra detalles de un producto y permite añadirlo al carrito  
+/cart: Ver productos en el carrito  
+/make_purchase: Finalizar carrito  
+/login: Login de cliente     
+/register: Alta de cliente  
+/setup_address: Configurar una nueva dirección para el cliente  
+logout                      
