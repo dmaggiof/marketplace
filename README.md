@@ -18,7 +18,7 @@ Teniendo docker y composer instalados, ejecutaremos los siguientes comandos:
 1. Clonar el repostiorio:
    `git clone https://github.com/dmaggiof/marketplace.git`
 2. Preparar y arrancar los contenedores de docker:
-   `docker compose up`. Si tenemos disponible el comando `make` en nuestro equipo podemos ejecutar `make up` para levantar los contenedores 
+   `docker compose up`. Si tenemos disponible el comando `make` en nuestro equipo podemos ejecutar `make up` para levantar los contenedores. El arranque de los contenedores preparará la base de datos, por lo que hay esperar unos segundos (unos 30 en mi equipo de desarrollo) hasta que el contenedor de Mysql completa el arranque. 
 3. Instalar dependencias:
   `docker exec -it project_web composer install`. Si tenemos disponible el comando `make` en nuestro equipo podemos ejecutar `make install-deps` para instalar las dependencias. 
 
