@@ -37,6 +37,7 @@ class MakePurchase {
 
         $this->logger->info("Generando nuevo pedido");
         $this->convertCartToOrder($cart, $customer);
+        $this->logger->info("Compra completada");
 
         $cartDetailsDto = new CartDetailsDTO($cart->getProductCarts()->toArray());
         $this->logger->debug("Devolviendo resultados");
