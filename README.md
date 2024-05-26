@@ -1,6 +1,6 @@
 # Marketplace DDD
 
-Este proyecto es una aplicación desarrollada con Symfony que sigue los principios de Domain Driven Design (DDD) y arquitectura hexagonal.
+Este proyecto es una aplicación web desarrollada con Symfony que sigue los principios de Domain Driven Design (DDD) y arquitectura hexagonal.
 
 ### Tecnologías utilizadas
 - Symfony 7
