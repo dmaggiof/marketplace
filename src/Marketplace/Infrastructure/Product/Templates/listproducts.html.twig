@@ -12,7 +12,7 @@
                 </h5>
                 <p>{{ product.name }}</p>
                 <p>{{ product.description }}</p>
-                <p>Precio: {{ product.price }} €</p>
+                <p>Precio: {{ product.price/100 }} €</p>
             </div>
         {% endfor %}
     </div>
