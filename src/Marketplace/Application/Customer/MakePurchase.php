@@ -9,15 +9,18 @@ use Marketplace\Domain\Order\Entity\Order;
 use Marketplace\Domain\Order\Entity\OrderLine;
 use Marketplace\Infrastructure\Customer\Infrastructure\Repository\CustomerRepository;
 use Marketplace\Infrastructure\Order\Repository\OrderRepository;
+use Psr\Log\LoggerInterface;
 
 class MakePurchase {
     private CustomerRepository $customerRepository;
     private OrderRepository $orderRepository;
+    private LoggerInterface $logger;
 
-    public function __construct(CustomerRepository $customerRepository, OrderRepository $orderRepository)
+    public function __construct(CustomerRepository $customerRepository, OrderRepository $orderRepository, LoggerInterface $logger)
     {
         $this->customerRepository = $customerRepository;
         $this->orderRepository = $orderRepository;
+        $this->logger = $logger;
     }
 
     /**
@@ -29,11 +32,14 @@ class MakePurchase {
 
         $cart = $customer->getPendingCart();
 
+        $this->logger->info("Finalizando carrito ".$cart->getId());
         $this->completeCart($customer);
 
+        $this->logger->info("Generando nuevo pedido");
         $this->convertCartToOrder($cart, $customer);
 
         $cartDetailsDto = new CartDetailsDTO($cart->getProductCarts()->toArray());
+        $this->logger->debug("Devolviendo resultados");
         return $cartDetailsDto;
     }
 
@@ -51,6 +57,7 @@ class MakePurchase {
             $orderLine->setPrice($product->getPrice());
             $order->addOrderLine($orderLine);
         }
+        $this->logger->debug("Guardando pedido " . $order->getId());
         $this->orderRepository->save($order);
 
     }

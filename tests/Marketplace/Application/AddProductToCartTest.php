@@ -6,8 +6,10 @@ use Marketplace\Application\Cart\AddProductToCart;
 use Marketplace\Application\Cart\DTO\AddProductToCartDTO;
 use Marketplace\Domain\Cart\Entity\Cart;
 use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
+use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
+use Marketplace\Domain\Customer\Exceptions\InsufficientStockForProduct;
 use Marketplace\Domain\Customer\Repository\CustomerRepositoryInterface;
 use Marketplace\Domain\Product\Entity\Product;
 use Marketplace\Domain\Product\Exceptions\ProductNotExists;
@@ -15,7 +17,9 @@ use Marketplace\Domain\Supplier\Entity\Supplier;
 use Marketplace\Infrastructure\Cart\Repository\InmemoryRepository\CartRepository;
 use Marketplace\Infrastructure\Customer\Infrastructure\Repository\InmemoryRepository\CustomerRepository;
 use Marketplace\Infrastructure\Product\Repository\InmemoryProductRepository;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class AddProductToCartTest extends TestCase
 {
@@ -30,7 +34,8 @@ class AddProductToCartTest extends TestCase
         $product1 = 1;
         $customer = 1;
 
-        $service = new AddProductToCart($cartRepository, $productRepository, $customerRepository);
+        $mockLogger = $this->createMock(LoggerInterface::class);
+        $service = new AddProductToCart($cartRepository, $productRepository, $customerRepository, $mockLogger);
 
         $productDTO = new AddProductToCartDTO($product1, 1, $customer, null);
         $service->execute($productDTO);
@@ -42,6 +47,12 @@ class AddProductToCartTest extends TestCase
         $this->assertEquals('producto1', $firstProductInCart->getProduct()->getName());
     }
 
+    /**
+     * @throws CantHaveMoreThanThreeProductsInCart
+     * @throws Exception
+     * @throws CantAddProductsToFinishedCart
+     * @throws InsufficientStockForProduct
+     */
     public function testItShouldFailAddingNotExistentProduct()
     {
         /** @var Customer $customer */
@@ -53,7 +64,8 @@ class AddProductToCartTest extends TestCase
         $product1 = 9999;
         $customer = 1;
 
-        $service = new AddProductToCart($cartRepository, $productRepository, $customerRepository);
+        $mockLogger = $this->createMock(LoggerInterface::class);
+        $service = new AddProductToCart($cartRepository, $productRepository, $customerRepository, $mockLogger);
 
         $productDTO = new AddProductToCartDTO($product1, 1, $customer, null);
 

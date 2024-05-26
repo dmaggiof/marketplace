@@ -10,12 +10,14 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use Marketplace\Application\Customer\DTO\CustomerPurchasing;
 use Marketplace\Application\Customer\MakePurchase;
 use Marketplace\Domain\Cart\Entity\Cart;
+use Marketplace\Domain\Cart\Exceptions\CantAddProductsToFinishedCart;
 use Marketplace\Domain\Cart\Exceptions\CantHaveMoreThanThreeProductsInCart;
 use Marketplace\Domain\Customer\Entity\Customer;
 use Marketplace\Domain\Customer\Entity\CustomerAddress;
 use Marketplace\Domain\Customer\Exceptions\CustomerHasNoAddressConfigured;
 use Marketplace\Domain\Order\Entity\Order;
 use Marketplace\Domain\Product\Entity\Product;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class MakePurchaseTest extends KernelTestCase
@@ -27,6 +29,7 @@ class MakePurchaseTest extends KernelTestCase
      * @return void
      * @throws CantHaveMoreThanThreeProductsInCart
      * @throws ORMException
+     * @throws CantAddProductsToFinishedCart
      */
     public function addThreeProductsToCart(Customer $customer): void
     {
@@ -85,7 +88,8 @@ class MakePurchaseTest extends KernelTestCase
         $this->assertEquals(3,$customer->getNumberOfProductsInCart());
         $this->assertEquals(CART::PENDING_CART, $customer->getCart()->getStatus());
 
-        $service = new MakePurchase($this->entityManager->getRepository(Customer::class), $this->entityManager->getRepository(Order::class));
+        $mockLogger = $this->createMock(LoggerInterface::class);
+        $service = new MakePurchase($this->entityManager->getRepository(Customer::class), $this->entityManager->getRepository(Order::class), $mockLogger);
         $service->execute(new CustomerPurchasing($customer->getId()));
         $this->assertSame('dmaggio@dmaggio.com', $customer->getEmail());
 
@@ -101,7 +105,7 @@ class MakePurchaseTest extends KernelTestCase
     /**
      * @throws OptimisticLockException
      * @throws ORMException
-     * @throws CantHaveMoreThanThreeProductsInCart
+     * @throws CantHaveMoreThanThreeProductsInCart|CantAddProductsToFinishedCart
      */
     public function testPurchaseShouldFailWhenCustomerHasNoAddress()
     {
@@ -129,7 +133,8 @@ class MakePurchaseTest extends KernelTestCase
         $this->entityManager->persist($customer);
         $this->entityManager->flush();
 
-        $service = new MakePurchase($this->entityManager->getRepository(Customer::class), $this->entityManager->getRepository(Order::class));
+        $mockLogger = $this->createMock(LoggerInterface::class);
+        $service = new MakePurchase($this->entityManager->getRepository(Customer::class), $this->entityManager->getRepository(Order::class), $mockLogger);
         $this->expectException(CustomerHasNoAddressConfigured::class);
         $service->execute(new CustomerPurchasing($customer->getId()));
     }

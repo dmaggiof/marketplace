@@ -17,6 +17,7 @@ use Marketplace\Infrastructure\Cart\Repository\InmemoryRepository\CartRepository
 use Marketplace\Infrastructure\Customer\Infrastructure\Repository\InmemoryRepository\CustomerRepository;
 use Marketplace\Infrastructure\Product\Repository\InmemoryProductRepository;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class RemoveProducFromCartTest extends TestCase
 {
@@ -34,8 +35,8 @@ class RemoveProducFromCartTest extends TestCase
 
         $product1 = 1;
         $customer = 1;
-
-        $service = new AddProductToCart($cartRepository, $productRepository, $customerRepository);
+        $mockLogger = $this->createMock(LoggerInterface::class);
+        $service = new AddProductToCart($cartRepository, $productRepository, $customerRepository, $mockLogger);
 
         $productDTO = new AddProductToCartDTO($product1, 1, $customer, null);
         $service->execute($productDTO);
