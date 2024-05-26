@@ -4,6 +4,9 @@ up:
 ssh:
 	docker exec -it project_web bash
 
+install-deps:
+	docker exec -it project_web composer install
+
 test:
 	docker exec -it project_web vendor/bin/phpunit
 
